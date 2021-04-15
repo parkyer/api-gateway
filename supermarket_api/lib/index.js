@@ -219,6 +219,53 @@ const registerMutations = `
     deleteRegister(id: String!):Boolean
 `;
 
+/*export const profileTypeDef = `
+  type Category {
+      id: Int!
+      name: String!
+      description: String!
+  }
+  input CategoryInput {
+      name: String!
+      description: String!
+  }`;*/
+
+  const vehicleTypeDef =  `
+  type Vehicle {
+    id: Int!
+    id_client: Int!
+    tipo: String!
+    tamano: String!
+    descripcion: String!
+  }`;
+
+/*export const profileQueries = `
+      allCategories: [User]!
+      categoryById(id: Int!): Category!
+  `;
+*/
+const vehicleQueries = `
+    getVehicle: [Vehicle]!
+`;
+
+/*export const profileMutations = `
+    createCategory(category: CategoryInput!): Category!
+    updateCategory(id: Int!, category: CategoryInput!): Category!
+    deleteCategory(id: Int!): Int
+`;*/
+
+/*export const vehicleMutations = `
+    createUser(user: UserInput!): User!
+    updateUser(id: Int!, user: EditUser!): User!
+    changePassword(id: Int!, password: PasswordInput!): User!
+    addPaymentMethod(id: Int!, payment: PaymentInput!): User!
+    deleteUser(id: Int!): User!
+`;*/
+
+const vehicleMutations = `
+    
+`;
+
 const url = '35.226.48.188';
 const port = '4000';
 
@@ -330,23 +377,71 @@ const resolvers$2 = {
 	}
 };
 
+const url$3 = '52.0.246.220';
+const port$3 = '3000';
+
+const URL$3 = `http://${url$3}:${port$3}`;
+const VEHICLES='vehiculos';
+//const ADD_AVATAR='add_avatar';
+//const GET_AVATAR='get_avatar';
+
+
+const resolvers$3 = {
+	Query: {
+		//CUSTOM ENDPONTS
+		getVehicle:(_)=> //endpoint para traer usuario
+			generalRequest(`${URL$3}/${VEHICLES}`, 'GET'),
+
+		//EXAMPLE ENDPOINTS
+		/*allCategories: (_) =>
+			getRequest(URL, ''),
+		categoryById: (_, { id }) =>
+			generalRequest(`${URL}/${id}`, 'GET'),*/
+		
+	},
+	Mutation: {
+		//CUSTOM ENDPONTS
+		/*createUser:(_, {user})=>
+			generalRequest(`${URL}/${ADD_USER}`,'POST',user),//endpoint para crear usuario
+		updateUser:(_,{id, user})=>
+			generalRequest(`${URL}/${EDIT_USER}/${id}`, 'PUT', user), //endpoint para editar usuario
+		changePassword:(_,{id,password})=>
+			generalRequest(`${URL}/${CHANGE_PASSWORD}/${id}`, 'PUT', password), //endpoint para cambiar la contraseña
+		addPaymentMethod:(_,{id,payment})=>
+			generalRequest(`${URL}/${PAYMENT_METHOD}/${id}`, 'PUT',payment), //endpoint para cambiar metodo de pago
+		deleteUser:(_,{ id })=>
+			generalRequest(`${URL}/${DELETE_USER}/${id}`, 'DELETE'),//endpoint para borrar usuario
+		*/
+			//EXAMPLE ENDPOINTS
+		/*createCategory: (_, { category }) =>
+			generalRequest(`${URL}/`, 'POST', category),
+		updateCategory: (_, { id, category }) =>
+			generalRequest(`${URL}/${id}`, 'PUT', category),
+		deleteCategory: (_, { id }) =>
+			generalRequest(`${URL}/${id}`, 'DELETE')*/
+	}
+};
+
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
 		'scalar JSON',
 		profileTypeDef,
 		quejasTypeDef,
-		registerTypeDef
+		registerTypeDef,
+		vehicleTypeDef
 	],
 	[
 		profileQueries,
 		registerQueries,
-		quejasQueries
+		quejasQueries,
+		vehicleQueries
 	],
 	[
 		profileMutations,
 		quejasMutations,
-		registerMutations
+		registerMutations,
+		vehicleMutations
 	]
 );
 
@@ -358,7 +453,8 @@ var graphQLSchema = graphqlTools.makeExecutableSchema({
 		{ JSON: GraphQLJSON }, // allows scalar JSON
 		resolvers,
 		resolvers$1,
-		resolvers$2
+		resolvers$2,
+		resolvers$3
 	)
 });
 
