@@ -1,11 +1,11 @@
 FROM node:carbon-slim
-USER root
 # Create app directory
 WORKDIR /parkyer-getway
 
 # Install app dependencies
 COPY package.json /parkyer-getway/
 RUN npm install
+RUN npm config set unsafe-perm true
 
 # Bundle app source
 COPY . /parkyer-getway/
