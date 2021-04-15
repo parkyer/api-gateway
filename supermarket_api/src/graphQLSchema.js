@@ -14,24 +14,33 @@ import {
 	quejasQueries,
 	quejasTypeDef
 } from './parkyer-getway/Quejas/typeDefs';
+import {
+	registerMutations,
+	registerQueries,
+	registerTypeDef
+} from './parkyer-getway/register/typeDefs';
 
 import categoryResolvers from './parkyer-getway/profile/resolvers';
 import QuejasResolvers from './parkyer-getway/Quejas/resolvers';
+import RegisterResolvers from './parkyer-getway/register/resolvers';
 
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
 		'scalar JSON',
 		profileTypeDef,
-		quejasTypeDef
+		quejasTypeDef,
+		registerTypeDef
 	],
 	[
 		profileQueries,
+		registerQueries,
 		quejasQueries
 	],
 	[
 		profileMutations,
-		quejasMutations
+		quejasMutations,
+		registerMutations
 	]
 );
 
@@ -41,6 +50,7 @@ export default makeExecutableSchema({
 	resolvers: merge(
 		{ JSON: GraphQLJSON }, // allows scalar JSON
 		categoryResolvers,
-		QuejasResolvers
+		QuejasResolvers,
+		RegisterResolvers
 	)
 });
