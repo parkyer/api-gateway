@@ -151,6 +151,45 @@ const profileMutations = `
     deleteUser(id: Int!): User!
 `;
 
+/*export const profileTypeDef = `
+  type Category {
+      id: Int!
+      name: String!
+      description: String!
+  }
+  input CategoryInput {
+      name: String!
+      description: String!
+  }`;*/
+
+  const quejasTypeDef =  `
+  type Queja {
+    _id: String!
+	queja_user: String!           
+	calificacion: Float!           
+	id_parkyer: Int!
+}
+ type InsertedID{
+    InsertedID: String!
+ }
+input QuejaInput {
+	Queja_user: String!           
+	Calificacion: Float!           
+	ID_Parkyer: Int!
+}
+`;
+
+const quejasQueries = `
+    getQueja(id: String!): Queja!
+    getQuejas: [Queja]!
+`;
+
+
+
+const quejasMutations = `
+    createQueja(queja: QuejaInput!): InsertedID!  
+`;
+
 const url = '35.226.48.188';
 const port = '4000';
 
@@ -201,17 +240,49 @@ const resolvers = {
 	}
 };
 
+const url$1 = '35.226.48.188';
+const port$1 = '4001';
+
+const URL$1 = `http://${url$1}:${port$1}`;
+const GET_QUEJA='queja';
+const ADD_QUEJA='queja';
+const GET_QUEJAS='quejas';
+
+
+
+
+const resolvers$1 = {
+	Query: {
+		//CUSTOM ENDPONTS
+		getQueja:(_, { id })=> //endpoint para traer queja
+			generalRequest(`${URL$1}/${GET_QUEJA}/${id}`, 'GET'),
+		getQuejas:(_)=> //endpoint para traer quejas
+			generalRequest(`${URL$1}/${GET_QUEJAS}`, 'GET'),				
+	
+	},
+	Mutation: {
+		//CUSTOM ENDPONTS
+		createQueja:(_, {queja})=>
+			generalRequest(`${URL$1}/${ADD_QUEJA}`,'POST',queja),//endpoint para crear queja
+
+	
+	}
+};
+
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
 		'scalar JSON',
-		profileTypeDef
+		profileTypeDef,
+		quejasTypeDef
 	],
 	[
-		profileQueries
+		profileQueries,
+		quejasQueries
 	],
 	[
-		profileMutations
+		profileMutations,
+		quejasMutations
 	]
 );
 
@@ -220,7 +291,8 @@ var graphQLSchema = graphqlTools.makeExecutableSchema({
 	typeDefs: mergedTypeDefs,
 	resolvers: merge(
 		{ JSON: GraphQLJSON }, // allows scalar JSON
-		resolvers
+		resolvers,
+		resolvers$1
 	)
 });
 
