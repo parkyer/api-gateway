@@ -12,7 +12,7 @@ var merge = _interopDefault(require('lodash.merge'));
 var GraphQLJSON = _interopDefault(require('graphql-type-json'));
 var graphqlTools = require('graphql-tools');
 var request = _interopDefault(require('request-promise-native'));
-var graphql = require('graphql');
+var graphql$1 = require('graphql');
 
 /**
  * Creates a request following the given parameters
@@ -43,23 +43,6 @@ async function generalRequest(url, method, body, fullResponse) {
 }
 
 /**
- * Adds parameters to a given route
- * @param {string} url
- * @param {object} parameters
- * @return {string} - url with the added parameters
- */
-
-
-/**
- * Generates a GET request with a list of query params
- * @param {string} url
- * @param {string} path
- * @param {object} parameters - key values to add to the url path
- * @return {Promise.<*>}
- */
-
-
-/**
  * Merge the schemas in order to avoid conflicts
  * @param {Array<string>} typeDefs
  * @param {Array<string>} queries
@@ -73,7 +56,7 @@ function mergeSchemas(typeDefs, queries, mutations) {
 }
 
 function formatErr(error) {
-	const data = graphql.formatError(error);
+	const data = graphql$1.formatError(error);
 	const { originalError } = error;
 	if (originalError && originalError.error) {
 		const { path } = data;
@@ -237,33 +220,29 @@ const registerMutations = `
     tipo: String!
     tamano: String!
     descripcion: String!
-  }`;
-
-/*export const profileQueries = `
-      allCategories: [User]!
-      categoryById(id: Int!): Category!
+  }
+  input VehicleInput {
+	id_client: Int!           
+	tipo: String!           
+	tamano: String!
+    descripcion: String!
+}
+input EditVehicle {          
+	tipo: String!           
+	tamano: String!
+    descripcion: String!
+}
   `;
-*/
+
 const vehicleQueries = `
-    getVehicle: [Vehicle]!
+    getAllVehicles: [Vehicle]!
+    getVehicle(id: Int!): Vehicle!
 `;
 
-/*export const profileMutations = `
-    createCategory(category: CategoryInput!): Category!
-    updateCategory(id: Int!, category: CategoryInput!): Category!
-    deleteCategory(id: Int!): Int
-`;*/
-
-/*export const vehicleMutations = `
-    createUser(user: UserInput!): User!
-    updateUser(id: Int!, user: EditUser!): User!
-    changePassword(id: Int!, password: PasswordInput!): User!
-    addPaymentMethod(id: Int!, payment: PaymentInput!): User!
-    deleteUser(id: Int!): User!
-`;*/
-
 const vehicleMutations = `
-    
+    createVehicle(vehicle: VehicleInput!): Vehicle!
+    updateVehicle(id: Int!, vehicle: EditVehicle!): Vehicle!
+    deleteVehicle(id: Int!): Int
 `;
 
 const url = '35.226.48.188';
@@ -381,16 +360,20 @@ const url$3 = '52.0.246.220';
 const port$3 = '3000';
 
 const URL$3 = `http://${url$3}:${port$3}`;
-const VEHICLES='vehiculos';
-//const ADD_AVATAR='add_avatar';
-//const GET_AVATAR='get_avatar';
+const VEHICLE='vehiculos';
+const GET_VEHICLES='vehiculos';
+const EDIT_VEHICLE='vehiculos';
+const DELETE_VEHICLE='vehiculos';
 
 
 const resolvers$3 = {
 	Query: {
 		//CUSTOM ENDPONTS
-		getVehicle:(_)=> //endpoint para traer usuario
-			generalRequest(`${URL$3}/${VEHICLES}`, 'GET'),
+		getAllVehicles:(_)=> //endpoint para traer usuario
+			generalRequest(`${URL$3}/${GET_VEHICLES}`, 'GET'),
+
+		getVehicle:(_, { id })=> //endpoint para traer queja
+			generalRequest(`${URL$3}/${VEHICLE}/${id}`, 'GET'),
 
 		//EXAMPLE ENDPOINTS
 		/*allCategories: (_) =>
@@ -401,6 +384,14 @@ const resolvers$3 = {
 	},
 	Mutation: {
 		//CUSTOM ENDPONTS
+		createVehicle:(_, {vehicle})=>
+			generalRequest(`${URL$3}/${VEHICLE}`,'POST',vehicle),
+		updateVehicle:(_,{id, vehicle})=>
+			generalRequest(`${URL$3}/${EDIT_VEHICLE}/${id}`, 'PUT', vehicle),
+		deleteVehicle:(_,{ id })=>
+			generalRequest(`${URL$3}/${DELETE_VEHICLE}/${id}`, 'DELETE')
+
+			
 		/*createUser:(_, {user})=>
 			generalRequest(`${URL}/${ADD_USER}`,'POST',user),//endpoint para crear usuario
 		updateUser:(_,{id, user})=>
@@ -477,13 +468,13 @@ app.use(async (ctx, next) => {
 });
 
 // GraphQL
-const graphql$1 = apolloServerKoa.graphqlKoa((ctx) => ({
+const graphql = apolloServerKoa.graphqlKoa((ctx) => ({
 	schema: graphQLSchema,
 	context: { token: ctx.state.token },
 	formatError: formatErr
 }));
-router.post('/graphql', koaBody(), graphql$1);
-router.get('/graphql', graphql$1);
+router.post('/graphql', koaBody(), graphql);
+router.get('/graphql', graphql);
 
 // test route
 router.get('/graphiql', apolloServerKoa.graphiqlKoa({ endpointURL: '/graphql' }));

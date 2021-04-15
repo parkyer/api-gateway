@@ -2,21 +2,20 @@ import { generalRequest, getRequest } from '../../utilities';
 import { url, port} from './server';
 
 const URL = `http://${url}:${port}`;
-const VEHICLES='vehiculos';
-const EDIT_USER='edit_user';
-const GET_USER='get_user';
-const CHANGE_PASSWORD='change_password';
-const PAYMENT_METHOD='add_payment_method';
-const DELETE_USER='delete_user';
-//const ADD_AVATAR='add_avatar';
-//const GET_AVATAR='get_avatar';
+const VEHICLE='vehiculos';
+const GET_VEHICLES='vehiculos';
+const EDIT_VEHICLE='vehiculos';
+const DELETE_VEHICLE='vehiculos';
 
 
 const resolvers = {
 	Query: {
 		//CUSTOM ENDPONTS
-		getVehicle:(_)=> //endpoint para traer usuario
-			generalRequest(`${URL}/${VEHICLES}`, 'GET'),
+		getAllVehicles:(_)=> //endpoint para traer usuario
+			generalRequest(`${URL}/${GET_VEHICLES}`, 'GET'),
+
+		getVehicle:(_, { id })=> //endpoint para traer queja
+			generalRequest(`${URL}/${VEHICLE}/${id}`, 'GET'),
 
 		//EXAMPLE ENDPOINTS
 		/*allCategories: (_) =>
@@ -27,6 +26,14 @@ const resolvers = {
 	},
 	Mutation: {
 		//CUSTOM ENDPONTS
+		createVehicle:(_, {vehicle})=>
+			generalRequest(`${URL}/${VEHICLE}`,'POST',vehicle),
+		updateVehicle:(_,{id, vehicle})=>
+			generalRequest(`${URL}/${EDIT_VEHICLE}/${id}`, 'PUT', vehicle),
+		deleteVehicle:(_,{ id })=>
+			generalRequest(`${URL}/${DELETE_VEHICLE}/${id}`, 'DELETE')
+
+			
 		/*createUser:(_, {user})=>
 			generalRequest(`${URL}/${ADD_USER}`,'POST',user),//endpoint para crear usuario
 		updateUser:(_,{id, user})=>

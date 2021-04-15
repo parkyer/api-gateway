@@ -16,31 +16,27 @@
     tipo: String!
     tamano: String!
     descripcion: String!
-  }`;
-
-/*export const profileQueries = `
-      allCategories: [User]!
-      categoryById(id: Int!): Category!
+  }
+  input VehicleInput {
+	id_client: Int!           
+	tipo: String!           
+	tamano: String!
+    descripcion: String!
+}
+input EditVehicle {          
+	tipo: String!           
+	tamano: String!
+    descripcion: String!
+}
   `;
-*/
+
 export const vehicleQueries = `
-    getVehicle: [Vehicle]!
+    getAllVehicles: [Vehicle]!
+    getVehicle(id: Int!): Vehicle!
 `;
 
-/*export const profileMutations = `
-    createCategory(category: CategoryInput!): Category!
-    updateCategory(id: Int!, category: CategoryInput!): Category!
-    deleteCategory(id: Int!): Int
-`;*/
-
-/*export const vehicleMutations = `
-    createUser(user: UserInput!): User!
-    updateUser(id: Int!, user: EditUser!): User!
-    changePassword(id: Int!, password: PasswordInput!): User!
-    addPaymentMethod(id: Int!, payment: PaymentInput!): User!
-    deleteUser(id: Int!): User!
-`;*/
-
 export const vehicleMutations = `
-    
+    createVehicle(vehicle: VehicleInput!): Vehicle!
+    updateVehicle(id: Int!, vehicle: EditVehicle!): Vehicle!
+    deleteVehicle(id: Int!): Int
 `;
