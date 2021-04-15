@@ -1,14 +1,14 @@
 FROM node:carbon-slim
 
 # Create app directory
-WORKDIR /supermarket_api
+WORKDIR /parkyer-getway
 
 # Install app dependencies
-COPY package.json /supermarket_api/
+COPY package.json /parkyer-getway/
 RUN npm install
 
 # Bundle app source
-COPY . /supermarket_api/
+COPY . /parkyer-getway/
 RUN npm run prepublish
 
 CMD [ "npm", "run", "runServer" ]
