@@ -190,6 +190,35 @@ const quejasMutations = `
     createQueja(queja: QuejaInput!): InsertedID!  
 `;
 
+const registerTypeDef = `
+  type Register {
+    Id: String!
+    User: Int!
+    ParkingId: Int!
+    Type: String!
+    Date: String!
+    
+}
+input RegisterInput {
+    user: Int!
+    parkingId: Int!
+    type: String!
+    date: String!
+}
+`;
+
+
+const registerQueries = `
+    getRegister(id: String!): Register!
+    get_Registers:[Register]!
+`;
+
+
+const registerMutations = `
+    createRegister(Register: RegisterInput!): Register!
+    deleteRegister(id: String!):Boolean
+`;
+
 const url = '35.226.48.188';
 const port = '4000';
 
@@ -269,22 +298,58 @@ const resolvers$1 = {
 	}
 };
 
+const url$2 = '54.237.253.183';
+const port$2 = '55441';
+const entryPoint = 'api/Registers';
+
+const URL$2 = `http://${url$2}:${port$2}/${entryPoint}`;
+//const ADD_AVATAR='add_avatar';
+//const GET_AVATAR='get_avatar';
+
+
+
+const resolvers$2 = {
+	Query: {
+		//CUSTOM ENDPONTS
+		getRegister:(_, { id })=> //endpoint para traer usuario
+			generalRequest(`${URL$2}/${id}`, 'GET'),
+
+		get_Registers: (_) =>
+		generalRequest(URL$2, 'GET'),
+		
+	
+		
+	},
+	Mutation: {
+		//CUSTOM ENDPONTS
+		createRegister:(_, {Register})=>
+			generalRequest(`${URL$2}`,'POST',Register),//endpoint para crear usuario
+		deleteRegister:(_,{ id })=>
+			generalRequest(`${URL$2}/${id}`, 'DELETE'),//endpoint para borrar usuario
+		
+	}
+};
+
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
 		'scalar JSON',
 		profileTypeDef,
-		quejasTypeDef
+		quejasTypeDef,
+		registerTypeDef
 	],
 	[
 		profileQueries,
+		registerQueries,
 		quejasQueries
 	],
 	[
 		profileMutations,
-		quejasMutations
+		quejasMutations,
+		registerMutations
 	]
 );
+
 
 // Generate the schema object from your types definition.
 var graphQLSchema = graphqlTools.makeExecutableSchema({
@@ -292,7 +357,8 @@ var graphQLSchema = graphqlTools.makeExecutableSchema({
 	resolvers: merge(
 		{ JSON: GraphQLJSON }, // allows scalar JSON
 		resolvers,
-		resolvers$1
+		resolvers$1,
+		resolvers$2
 	)
 });
 

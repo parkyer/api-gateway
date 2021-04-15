@@ -1,15 +1,16 @@
+
 export const registerTypeDef = `
   type Register {
-    id: String!
-    user: Int!
-    parkinId: Int!
-    type: String!
-    date: String!
+    Id: String!
+    User: Int!
+    ParkingId: Int!
+    Type: String!
+    Date: String!
     
 }
 input RegisterInput {
     user: Int!
-    parkinId: Int!
+    parkingId: Int!
     type: String!
     date: String!
 }
@@ -24,5 +25,5 @@ export const registerQueries = `
 
 export const registerMutations = `
     createRegister(Register: RegisterInput!): Register!
-    deleteRegister(id: String!)
+    deleteRegister(id: String!):Boolean
 `;

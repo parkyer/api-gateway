@@ -9,11 +9,12 @@ const DELETE_Register='delete_Register';
 //const GET_AVATAR='get_avatar';
 
 
+
 const resolvers = {
 	Query: {
 		//CUSTOM ENDPONTS
 		getRegister:(_, { id })=> //endpoint para traer usuario
-			generalRequest(`${URL}/${GET_Register}/${id}`, 'GET'),
+			generalRequest(`${URL}/${id}`, 'GET'),
 
 		get_Registers: (_) =>
 		generalRequest(URL, 'GET'),
@@ -24,9 +25,9 @@ const resolvers = {
 	Mutation: {
 		//CUSTOM ENDPONTS
 		createRegister:(_, {Register})=>
-			generalRequest(`${URL}/${ADD_Register}`,'POST',Register),//endpoint para crear usuario
+			generalRequest(`${URL}`,'POST',Register),//endpoint para crear usuario
 		deleteRegister:(_,{ id })=>
-			generalRequest(`${URL}/${DELETE_Register}/${id}`, 'DELETE'),//endpoint para borrar usuario
+			generalRequest(`${URL}/${id}`, 'DELETE'),//endpoint para borrar usuario
 		
 	}
 };

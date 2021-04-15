@@ -44,6 +44,7 @@ const mergedTypeDefs = mergeSchemas(
 	]
 );
 
+
 // Generate the schema object from your types definition.
 export default makeExecutableSchema({
 	typeDefs: mergedTypeDefs,
