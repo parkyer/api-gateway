@@ -1,5 +1,5 @@
 FROM node:carbon-slim
-
+USER root
 # Create app directory
 WORKDIR /parkyer-getway
 
