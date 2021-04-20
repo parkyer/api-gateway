@@ -12,7 +12,7 @@ var merge = _interopDefault(require('lodash.merge'));
 var GraphQLJSON = _interopDefault(require('graphql-type-json'));
 var graphqlTools = require('graphql-tools');
 var request = _interopDefault(require('request-promise-native'));
-var graphql = require('graphql');
+var graphql$1 = require('graphql');
 
 /**
  * Creates a request following the given parameters
@@ -43,23 +43,6 @@ async function generalRequest(url, method, body, fullResponse) {
 }
 
 /**
- * Adds parameters to a given route
- * @param {string} url
- * @param {object} parameters
- * @return {string} - url with the added parameters
- */
-
-
-/**
- * Generates a GET request with a list of query params
- * @param {string} url
- * @param {string} path
- * @param {object} parameters - key values to add to the url path
- * @return {Promise.<*>}
- */
-
-
-/**
  * Merge the schemas in order to avoid conflicts
  * @param {Array<string>} typeDefs
  * @param {Array<string>} queries
@@ -73,7 +56,7 @@ function mergeSchemas(typeDefs, queries, mutations) {
 }
 
 function formatErr(error) {
-	const data = graphql.formatError(error);
+	const data = graphql$1.formatError(error);
 	const { originalError } = error;
 	if (originalError && originalError.error) {
 		const { path } = data;
@@ -290,6 +273,32 @@ const contactoMutations = `
     crearMensaje(mensaje: Usuario!): MensajeRecibido!
 `;
 
+const admin2TypeDef =  `
+
+type Parking {
+    id: Int!
+    id_owner: Int!
+    id_client: String!
+    latitude: String!
+    longitude: String!
+    location: String!
+    type: String!    
+}
+input clienteInput {
+    id_client: String!
+}`;
+
+const admin2Queries = `
+    getParkings:[Parking]!
+    getParkingsUsedBy(id: Int!):[Parking]!
+    getAvailableParkings:[Parking]!
+`;
+
+const admin2Mutations = `
+    newSuscription(id: Int!, client: clienteInput!): Parking!
+    deleteSuscription(id: Int!): Parking!
+`;
+
 const url = '35.226.48.188';
 const port = '4000';
 
@@ -482,6 +491,40 @@ const resolvers$4 = {
 	}
 };
 
+//export const url = '3.221.87.48'
+const url$5 = 'localhost';
+const port$5 = '8080';
+
+const URL$5 = `http://${url$5}:${port$5}`;
+const GET_PARKINGS='parkings';
+const GET_PARKINGSUSED='parkingsusedby';
+const NEW='newsuscription';
+const DELETE='deletesuscription';
+const GET_AVAILABLE='availableparkings';
+
+const resolvers$5 = {
+	Query: {
+		//CUSTOM ENDPONTS
+		getParkings:(_)=> 
+			generalRequest(`${URL$5}/${GET_PARKINGS}`, 'GET'),
+
+		getParkingsUsedBy:(_,{ id })=>
+			generalRequest(`${URL$5}/${GET_PARKINGSUSED}/${id}`, 'GET'),
+
+		getAvailableParkings:(_)=> 
+			generalRequest(`${URL$5}/${GET_AVAILABLE}`, 'GET'),
+		
+	},
+	
+	Mutation: {
+		//CUSTOM ENDPONTS
+		newSuscription:(_, {id, client})=>
+			generalRequest(`${URL$5}/${NEW}/${id}`,'PUT', client),
+		deleteSuscription:(_,{id})=>
+			generalRequest(`${URL$5}/${DELETE}/${id}`, 'PUT'),
+	}
+};
+
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
@@ -490,21 +533,24 @@ const mergedTypeDefs = mergeSchemas(
 		quejasTypeDef,
 		registerTypeDef,
 		vehicleTypeDef,
-		contactoTypeDef
+		contactoTypeDef,
+		admin2TypeDef
 	],
 	[
 		profileQueries,
 		registerQueries,
 		quejasQueries,
 		vehicleQueries,
-		contactoQueries
+		contactoQueries,
+		admin2Queries
 	],
 	[
 		profileMutations,
 		quejasMutations,
 		registerMutations,
 		vehicleMutations,
-		contactoMutations
+		contactoMutations,
+		admin2Mutations
 	]
 );
 
@@ -518,7 +564,8 @@ var graphQLSchema = graphqlTools.makeExecutableSchema({
 		resolvers$1,
 		resolvers$2,
 		resolvers$3,
-		resolvers$4
+		resolvers$4,
+		resolvers$5
 	)
 });
 
@@ -541,13 +588,13 @@ app.use(async (ctx, next) => {
 });
 
 // GraphQL
-const graphql$1 = apolloServerKoa.graphqlKoa((ctx) => ({
+const graphql = apolloServerKoa.graphqlKoa((ctx) => ({
 	schema: graphQLSchema,
 	context: { token: ctx.state.token },
 	formatError: formatErr
 }));
-router.post('/graphql', koaBody(), graphql$1);
-router.get('/graphql', graphql$1);
+router.post('/graphql', koaBody(), graphql);
+router.get('/graphql', graphql);
 
 // test route
 router.get('/graphiql', apolloServerKoa.graphiqlKoa({ endpointURL: '/graphql' }));
