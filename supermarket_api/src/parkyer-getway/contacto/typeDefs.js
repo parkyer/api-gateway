@@ -4,7 +4,7 @@ export const contactoTypeDef = `
 }
 type Users {
     mensaje: String!
-    idmensaje: Int!
+    idmensaje: Int
     id_usuario: Int!
     tipo: String!
 }
