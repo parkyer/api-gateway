@@ -165,29 +165,36 @@ const profileMutations = `
   const quejasTypeDef =  `
   type Queja {
     _id: String!
-	queja_user: String!           
-	calificacion: Float!           
+	queja_user: String!       
 	id_parkyer: Int!
 }
  type InsertedID{
     InsertedID: String!
  }
+type Calificacion{
+    _id: String!
+    calificacion: Float!
+}
 input QuejaInput {
-	Queja_user: String!           
-	Calificacion: Float!           
+	Queja_user: String!         
 	ID_Parkyer: Int!
+}
+input CalificacionInput {
+    calificacion: Float!
 }
 `;
 
 const quejasQueries = `
     getQueja(id: String!): Queja!
     getQuejas: [Queja]!
+    getCalificacion(id: String!): Calificacion!
 `;
 
 
 
 const quejasMutations = `
-    createQueja(queja: QuejaInput!): InsertedID!  
+    createQueja(queja: QuejaInput!): InsertedID!
+    createCalificacion(calificacion: CalificacionInput!): InsertedID!
 `;
 
 const registerTypeDef = `
@@ -373,6 +380,8 @@ const URL$1 = `http://${url$1}:${port$1}`;
 const GET_QUEJA='queja';
 const ADD_QUEJA='queja';
 const GET_QUEJAS='quejas';
+const GET_CALIFICACIONES='calificaciones';
+const ADD_CALIFICACION='calificacion';
 
 
 
@@ -383,15 +392,16 @@ const resolvers$1 = {
 		getQueja:(_, { id })=> //endpoint para traer queja
 			generalRequest(`${URL$1}/${GET_QUEJA}/${id}`, 'GET'),
 		getQuejas:(_)=> //endpoint para traer quejas
-			generalRequest(`${URL$1}/${GET_QUEJAS}`, 'GET'),				
-	
+			generalRequest(`${URL$1}/${GET_QUEJAS}`, 'GET'),
+		getCalificacion:(_, { id })=> //endpoint para traer queja
+			generalRequest(`${URL$1}/${GET_CALIFICACIONES}/${id}`, 'GET'),				
 	},
 	Mutation: {
 		//CUSTOM ENDPONTS
 		createQueja:(_, {queja})=>
 			generalRequest(`${URL$1}/${ADD_QUEJA}`,'POST',queja),//endpoint para crear queja
-
-	
+		createCalificacion:(_, {calificacion})=>
+			generalRequest(`${URL$1}/${ADD_CALIFICACION}`,'POST',calificacion),//endpoint para crear queja
 	}
 };
 
@@ -484,7 +494,7 @@ const resolvers$3 = {
 	}
 };
 
-const url$4 = 'localhost';
+const url$4 = '18.216.208.246';
 const port$4 = '8080';
 
 const URL$4 = `http://${url$4}:${port$4}`;
