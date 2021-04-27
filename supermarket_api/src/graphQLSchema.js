@@ -34,6 +34,11 @@ import {
 	admin2Queries,
 	admin2TypeDef
 } from './parkyer-getway/administration_two/typeDefs';
+import {
+	authenticationMutations,
+	authenticationQueries,
+	authenticationTypeDef
+} from './parkyer-getway/authentication/typeDefs';
 
 import categoryResolvers from './parkyer-getway/profile/resolvers';
 import QuejasResolvers from './parkyer-getway/Quejas/resolvers';
@@ -41,6 +46,7 @@ import RegisterResolvers from './parkyer-getway/register/resolvers';
 import vehicleResolvers from './parkyer-getway/vehicles/resolvers';
 import contactoResolvers from './parkyer-getway/contacto/resolvers';
 import admin2Resolvers from './parkyer-getway/administration_two/resolvers';
+import authenticationResolvers from './parkyer-getway/authentication/resolvers';
 
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
@@ -51,7 +57,8 @@ const mergedTypeDefs = mergeSchemas(
 		registerTypeDef,
 		vehicleTypeDef,
 		contactoTypeDef,
-		admin2TypeDef
+		admin2TypeDef,
+		authenticationTypeDef
 	],
 	[
 		profileQueries,
@@ -59,7 +66,8 @@ const mergedTypeDefs = mergeSchemas(
 		quejasQueries,
 		vehicleQueries,
 		contactoQueries,
-		admin2Queries
+		admin2Queries,
+		authenticationQueries
 	],
 	[
 		profileMutations,
@@ -67,7 +75,8 @@ const mergedTypeDefs = mergeSchemas(
 		registerMutations,
 		vehicleMutations,
 		contactoMutations,
-		admin2Mutations
+		admin2Mutations,
+		authenticationMutations
 	]
 );
 
@@ -82,6 +91,7 @@ export default makeExecutableSchema({
 		RegisterResolvers,
 		vehicleResolvers,
 		contactoResolvers,
-		admin2Resolvers
+		admin2Resolvers,
+		authenticationResolvers
 	)
 });

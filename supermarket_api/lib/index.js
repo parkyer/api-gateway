@@ -323,6 +323,46 @@ const admin2Mutations = `
     deleteSuscription(id: Int!): Parking!
 `;
 
+const authenticationTypeDef = `
+type UserLogin {
+    id: Int!
+    name: String!
+    last_name: String!
+    email: String!
+    password: String!
+    phone: Int!
+    payment_method: Int!
+    address: String!
+}
+type Login {
+    access: String!
+}
+input UserInputLogin {
+    name: String!
+    last_name: String!
+    email: String!
+    password: String!
+    phone: Int!
+    payment_method: Int!
+    address: String!
+}
+input LoginInput {
+    email: String!
+    password: String!
+}
+`;
+
+
+const authenticationQueries = `
+
+`;
+
+
+const authenticationMutations = `
+    crearUsuario(usuario: UserInputLogin!): UserLogin!
+    iniciarSesion(login: LoginInput!): Login!
+`;
+
 const url = '35.226.48.188';
 const port = '4000';
 
@@ -551,6 +591,26 @@ const resolvers$5 = {
 	}
 };
 
+const url$6 = '35.226.48.188';
+const port$6 = '4002';
+
+const URL$6 = `http://${url$6}:${port$6}`;
+const ADD_USER$1='add_user';
+const LOGIN='login';
+
+const resolvers$6 = {
+	Query: {
+		//CUSTOM ENDPONTS
+	},
+	Mutation: {
+		//CUSTOM ENDPONTS
+		crearUsuario:(_, {usuario})=>
+			generalRequest(`${URL$6}/${ADD_USER$1}`,'POST',usuario),//endpoint para crear usuario
+        iniciarSesion:(_,{login})=>
+            generalRequest(`${URL$6}/${LOGIN}`,'POST',login)
+	}
+};
+
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
@@ -560,7 +620,8 @@ const mergedTypeDefs = mergeSchemas(
 		registerTypeDef,
 		vehicleTypeDef,
 		contactoTypeDef,
-		admin2TypeDef
+		admin2TypeDef,
+		authenticationTypeDef
 	],
 	[
 		profileQueries,
@@ -568,7 +629,8 @@ const mergedTypeDefs = mergeSchemas(
 		quejasQueries,
 		vehicleQueries,
 		contactoQueries,
-		admin2Queries
+		admin2Queries,
+		authenticationQueries
 	],
 	[
 		profileMutations,
@@ -576,7 +638,8 @@ const mergedTypeDefs = mergeSchemas(
 		registerMutations,
 		vehicleMutations,
 		contactoMutations,
-		admin2Mutations
+		admin2Mutations,
+		authenticationMutations
 	]
 );
 
@@ -591,7 +654,8 @@ var graphQLSchema = graphqlTools.makeExecutableSchema({
 		resolvers$2,
 		resolvers$3,
 		resolvers$4,
-		resolvers$5
+		resolvers$5,
+		resolvers$6
 	)
 });
 
