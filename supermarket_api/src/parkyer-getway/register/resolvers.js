@@ -13,9 +13,15 @@ const DELETE_Register='delete_Register';
 const resolvers = {
 	Query: {
 		//CUSTOM ENDPONTS
-		getRegister:(_, { id })=> //endpoint para traer usuario
-			generalRequest(`${URL}/${id}`, 'GET'),
-
+		getRegister:(_, { id })=> //endpoint para traer registros
+			generalRequest(`${URL}/Get/${id}`, 'GET'),
+		
+		getRegisterUser:(_, { user })=> //endpoint para traer usuario
+			generalRequest(`${URL}/GetUser/${user}`, 'GET'),
+		
+		getRegisterParking:(_, { parkingId })=> //endpoint para traer usuario
+			generalRequest(`${URL}/GetParking/${parkingId}`, 'GET'),
+			
 		get_Registers: (_) =>
 		generalRequest(URL, 'GET'),
 		
@@ -25,9 +31,9 @@ const resolvers = {
 	Mutation: {
 		//CUSTOM ENDPONTS
 		createRegister:(_, {Register})=>
-			generalRequest(`${URL}`,'POST',Register),//endpoint para crear usuario
+			generalRequest(`${URL}`,'POST',Register),//endpoint para crear registro
 		deleteRegister:(_,{ id })=>
-			generalRequest(`${URL}/${id}`, 'DELETE'),//endpoint para borrar usuario
+			generalRequest(`${URL}/${id}`, 'DELETE'),//endpoint para borrar registro
 		
 	}
 };

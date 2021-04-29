@@ -20,6 +20,8 @@ input RegisterInput {
 export const registerQueries = `
     getRegister(id: String!): Register!
     get_Registers:[Register]!
+    getRegisterUser(user: Int!):[Register]!
+    getRegisterParking(parkingId: Int!):[Register]!
 `;
 
 
