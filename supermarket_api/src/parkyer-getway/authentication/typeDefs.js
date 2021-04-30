@@ -11,6 +11,7 @@ type UserLogin {
 }
 type Login {
     access: String!
+    id: Int!
 }
 input UserInputLogin {
     name: String!

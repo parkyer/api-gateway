@@ -1,27 +1,18 @@
 'use strict';
 
-var Koa = require('koa');
-var KoaRouter = require('koa-router');
-var koaLogger = require('koa-logger');
-var koaBody = require('koa-bodyparser');
-var koaCors = require('@koa/cors');
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var Koa = _interopDefault(require('koa'));
+var KoaRouter = _interopDefault(require('koa-router'));
+var koaLogger = _interopDefault(require('koa-logger'));
+var koaBody = _interopDefault(require('koa-bodyparser'));
+var koaCors = _interopDefault(require('@koa/cors'));
 var apolloServerKoa = require('apollo-server-koa');
-var merge = require('lodash.merge');
-var GraphQLJSON = require('graphql-type-json');
+var merge = _interopDefault(require('lodash.merge'));
+var GraphQLJSON = _interopDefault(require('graphql-type-json'));
 var graphqlTools = require('graphql-tools');
-var request = require('request-promise-native');
-var graphql$1 = require('graphql');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var Koa__default = /*#__PURE__*/_interopDefaultLegacy(Koa);
-var KoaRouter__default = /*#__PURE__*/_interopDefaultLegacy(KoaRouter);
-var koaLogger__default = /*#__PURE__*/_interopDefaultLegacy(koaLogger);
-var koaBody__default = /*#__PURE__*/_interopDefaultLegacy(koaBody);
-var koaCors__default = /*#__PURE__*/_interopDefaultLegacy(koaCors);
-var merge__default = /*#__PURE__*/_interopDefaultLegacy(merge);
-var GraphQLJSON__default = /*#__PURE__*/_interopDefaultLegacy(GraphQLJSON);
-var request__default = /*#__PURE__*/_interopDefaultLegacy(request);
+var request = _interopDefault(require('request-promise-native'));
+var graphql = require('graphql');
 
 /**
  * Creates a request following the given parameters
@@ -45,11 +36,28 @@ async function generalRequest(url, method, body, fullResponse) {
 	}
 
 	try {
-		return await request__default['default'](parameters);
+		return await request(parameters);
 	} catch (err) {
 		return err;
 	}
 }
+
+/**
+ * Adds parameters to a given route
+ * @param {string} url
+ * @param {object} parameters
+ * @return {string} - url with the added parameters
+ */
+
+
+/**
+ * Generates a GET request with a list of query params
+ * @param {string} url
+ * @param {string} path
+ * @param {object} parameters - key values to add to the url path
+ * @return {Promise.<*>}
+ */
+
 
 /**
  * Merge the schemas in order to avoid conflicts
@@ -65,7 +73,7 @@ function mergeSchemas(typeDefs, queries, mutations) {
 }
 
 function formatErr(error) {
-	const data = graphql$1.formatError(error);
+	const data = graphql.formatError(error);
 	const { originalError } = error;
 	if (originalError && originalError.error) {
 		const { path } = data;
@@ -330,6 +338,7 @@ type UserLogin {
 }
 type Login {
     access: String!
+    id: Int!
 }
 input UserInputLogin {
     name: String!
@@ -357,11 +366,11 @@ const authenticationMutations = `
     iniciarSesion(login: LoginInput!): Login!
 `;
 
-const url$6 = '35.226.48.188';
-const port$6 = '4000';
+const url = '35.226.48.188';
+const port = '4000';
 
-const URL$6 = `http://${url$6}:${port$6}`;
-const ADD_USER$1='add_user';
+const URL = `http://${url}:${port}`;
+const ADD_USER='add_user';
 const EDIT_USER='edit_user';
 const GET_USER='get_user';
 const CHANGE_PASSWORD='change_password';
@@ -371,11 +380,11 @@ const DELETE_USER='delete_user';
 //const GET_AVATAR='get_avatar';
 
 
-const resolvers$6 = {
+const resolvers = {
 	Query: {
 		//CUSTOM ENDPONTS
 		getUser:(_, { id })=> //endpoint para traer usuario
-			generalRequest(`${URL$6}/${GET_USER}/${id}`, 'GET'),
+			generalRequest(`${URL}/${GET_USER}/${id}`, 'GET'),
 
 		//EXAMPLE ENDPOINTS
 		/*allCategories: (_) =>
@@ -387,15 +396,15 @@ const resolvers$6 = {
 	Mutation: {
 		//CUSTOM ENDPONTS
 		createUser:(_, {user})=>
-			generalRequest(`${URL$6}/${ADD_USER$1}`,'POST',user),//endpoint para crear usuario
+			generalRequest(`${URL}/${ADD_USER}`,'POST',user),//endpoint para crear usuario
 		updateUser:(_,{id, user})=>
-			generalRequest(`${URL$6}/${EDIT_USER}/${id}`, 'PUT', user), //endpoint para editar usuario
+			generalRequest(`${URL}/${EDIT_USER}/${id}`, 'PUT', user), //endpoint para editar usuario
 		changePassword:(_,{id,password})=>
-			generalRequest(`${URL$6}/${CHANGE_PASSWORD}/${id}`, 'PUT', password), //endpoint para cambiar la contraseña
+			generalRequest(`${URL}/${CHANGE_PASSWORD}/${id}`, 'PUT', password), //endpoint para cambiar la contraseña
 		addPaymentMethod:(_,{id,payment})=>
-			generalRequest(`${URL$6}/${PAYMENT_METHOD}/${id}`, 'PUT',payment), //endpoint para cambiar metodo de pago
+			generalRequest(`${URL}/${PAYMENT_METHOD}/${id}`, 'PUT',payment), //endpoint para cambiar metodo de pago
 		deleteUser:(_,{ id })=>
-			generalRequest(`${URL$6}/${DELETE_USER}/${id}`, 'DELETE'),//endpoint para borrar usuario
+			generalRequest(`${URL}/${DELETE_USER}/${id}`, 'DELETE'),//endpoint para borrar usuario
 		
 			//EXAMPLE ENDPOINTS
 		/*createCategory: (_, { category }) =>
@@ -407,10 +416,10 @@ const resolvers$6 = {
 	}
 };
 
-const url$5 = '35.226.48.188';
-const port$5 = '4001';
+const url$1 = '35.226.48.188';
+const port$1 = '4001';
 
-const URL$5 = `http://${url$5}:${port$5}`;
+const URL$1 = `http://${url$1}:${port$1}`;
 const GET_QUEJA='queja';
 const ADD_QUEJA='queja';
 const GET_QUEJAS='quejas';
@@ -420,49 +429,49 @@ const ADD_CALIFICACION='calificacion';
 
 
 
-const resolvers$5 = {
+const resolvers$1 = {
 	Query: {
 		//CUSTOM ENDPONTS
 		getQueja:(_, { id })=> //endpoint para traer queja
-			generalRequest(`${URL$5}/${GET_QUEJA}/${id}`, 'GET'),
+			generalRequest(`${URL$1}/${GET_QUEJA}/${id}`, 'GET'),
 		getQuejas:(_)=> //endpoint para traer quejas
-			generalRequest(`${URL$5}/${GET_QUEJAS}`, 'GET'),
+			generalRequest(`${URL$1}/${GET_QUEJAS}`, 'GET'),
 		getCalificacion:(_, { id })=> //endpoint para traer queja
-			generalRequest(`${URL$5}/${GET_CALIFICACIONES}/${id}`, 'GET'),				
+			generalRequest(`${URL$1}/${GET_CALIFICACIONES}/${id}`, 'GET'),				
 	},
 	Mutation: {
 		//CUSTOM ENDPONTS
 		createQueja:(_, {queja})=>
-			generalRequest(`${URL$5}/${ADD_QUEJA}`,'POST',queja),//endpoint para crear queja
+			generalRequest(`${URL$1}/${ADD_QUEJA}`,'POST',queja),//endpoint para crear queja
 		createCalificacion:(_, {calificacion})=>
-			generalRequest(`${URL$5}/${ADD_CALIFICACION}`,'POST',calificacion),//endpoint para crear queja
+			generalRequest(`${URL$1}/${ADD_CALIFICACION}`,'POST',calificacion),//endpoint para crear queja
 	}
 };
 
-const url$4 = '54.237.253.183';
-const port$4 = '55441';
+const url$2 = '54.237.253.183';
+const port$2 = '55441';
 const entryPoint = 'api/Registers';
 
-const URL$4 = `http://${url$4}:${port$4}/${entryPoint}`;
+const URL$2 = `http://${url$2}:${port$2}/${entryPoint}`;
 //const ADD_AVATAR='add_avatar';
 //const GET_AVATAR='get_avatar';
 
 
 
-const resolvers$4 = {
+const resolvers$2 = {
 	Query: {
 		//CUSTOM ENDPONTS
 		getRegister:(_, { id })=> //endpoint para traer registros
-			generalRequest(`${URL$4}/Get/${id}`, 'GET'),
+			generalRequest(`${URL$2}/Get/${id}`, 'GET'),
 		
 		getRegisterUser:(_, { user })=> //endpoint para traer usuario
-			generalRequest(`${URL$4}/GetUser/${user}`, 'GET'),
+			generalRequest(`${URL$2}/GetUser/${user}`, 'GET'),
 		
 		getRegisterParking:(_, { parkingId })=> //endpoint para traer usuario
-			generalRequest(`${URL$4}/GetParking/${parkingId}`, 'GET'),
+			generalRequest(`${URL$2}/GetParking/${parkingId}`, 'GET'),
 			
 		get_Registers: (_) =>
-		generalRequest(URL$4, 'GET'),
+		generalRequest(URL$2, 'GET'),
 		
 	
 		
@@ -470,9 +479,9 @@ const resolvers$4 = {
 	Mutation: {
 		//CUSTOM ENDPONTS
 		createRegister:(_, {Register})=>
-			generalRequest(`${URL$4}`,'POST',Register),//endpoint para crear registro
+			generalRequest(`${URL$2}`,'POST',Register),//endpoint para crear registro
 		deleteRegister:(_,{ id })=>
-			generalRequest(`${URL$4}/${id}`, 'DELETE'),//endpoint para borrar registro
+			generalRequest(`${URL$2}/${id}`, 'DELETE'),//endpoint para borrar registro
 		
 	}
 };
@@ -534,19 +543,19 @@ const resolvers$3 = {
 	}
 };
 
-const url$2 = '18.216.208.246';
-const port$2 = '8080';
+const url$4 = '18.216.208.246';
+const port$4 = '8080';
 
-const URL$2 = `http://${url$2}:${port$2}`;
+const URL$4 = `http://${url$4}:${port$4}`;
 const Inicio='inicio';
 const Contacto='contacto';
 
 
-const resolvers$2 = {
+const resolvers$4 = {
 	Query: {
 		//CUSTOM ENDPONTS
 		getInicio:(_)=> //endpoint para traer registros
-			generalRequest(`${URL$2}/${Inicio}`, 'GET'),
+			generalRequest(`${URL$4}/${Inicio}`, 'GET'),
 		
 	
 		
@@ -554,60 +563,60 @@ const resolvers$2 = {
 	Mutation: {
 		//CUSTOM ENDPONTS
 		crearMensaje:(_, {mensaje})=>
-			generalRequest(`${URL$2}/${Contacto}`,'POST',mensaje),//endpoint para crear usuario
+			generalRequest(`${URL$4}/${Contacto}`,'POST',mensaje),//endpoint para crear usuario
 	}
 };
 
-const url$1 = '3.221.87.48';
-const port$1 = '8080';
+const url$5 = '3.221.87.48';
+const port$5 = '8080';
 
-const URL$1 = `http://${url$1}:${port$1}`;
+const URL$5 = `http://${url$5}:${port$5}`;
 const GET_PARKINGS='parkings';
 const GET_PARKINGSUSED='parkingsusedby';
 const NEW='newsuscription';
 const DELETE='deletesuscription';
 const GET_AVAILABLE='availableparkings';
 
-const resolvers$1 = {
+const resolvers$5 = {
 	Query: {
 		//CUSTOM ENDPONTS
 		getParkings:(_)=> 
-			generalRequest(`${URL$1}/${GET_PARKINGS}`, 'GET'),
+			generalRequest(`${URL$5}/${GET_PARKINGS}`, 'GET'),
 
 		getParkingsUsedBy:(_,{ id })=>
-			generalRequest(`${URL$1}/${GET_PARKINGSUSED}/${id}`, 'GET'),
+			generalRequest(`${URL$5}/${GET_PARKINGSUSED}/${id}`, 'GET'),
 
 		getAvailableParkings:(_)=> 
-			generalRequest(`${URL$1}/${GET_AVAILABLE}`, 'GET'),
+			generalRequest(`${URL$5}/${GET_AVAILABLE}`, 'GET'),
 		
 	},
 	
 	Mutation: {
 		//CUSTOM ENDPONTS
 		newSuscription:(_, {id, client})=>
-			generalRequest(`${URL$1}/${NEW}/${id}`,'PUT', client),
+			generalRequest(`${URL$5}/${NEW}/${id}`,'PUT', client),
 		deleteSuscription:(_,{id})=>
-			generalRequest(`${URL$1}/${DELETE}/${id}`, 'PUT'),
+			generalRequest(`${URL$5}/${DELETE}/${id}`, 'PUT'),
 	}
 };
 
-const url = '35.226.48.188';
-const port = '4002';
+const url$6 = '35.226.48.188';
+const port$6 = '4002';
 
-const URL = `http://${url}:${port}`;
-const ADD_USER='add_user';
+const URL$6 = `http://${url$6}:${port$6}`;
+const ADD_USER$1='add_user';
 const LOGIN='login';
 
-const resolvers = {
+const resolvers$6 = {
 	Query: {
 		//CUSTOM ENDPONTS
 	},
 	Mutation: {
 		//CUSTOM ENDPONTS
 		crearUsuario:(_, {usuario})=>
-			generalRequest(`${URL}/${ADD_USER}`,'POST',usuario),//endpoint para crear usuario
+			generalRequest(`${URL$6}/${ADD_USER$1}`,'POST',usuario),//endpoint para crear usuario
         iniciarSesion:(_,{login})=>
-            generalRequest(`${URL}/${LOGIN}`,'POST',login)
+            generalRequest(`${URL$6}/${LOGIN}`,'POST',login)
 	}
 };
 
@@ -647,24 +656,24 @@ const mergedTypeDefs = mergeSchemas(
 // Generate the schema object from your types definition.
 var graphQLSchema = graphqlTools.makeExecutableSchema({
 	typeDefs: mergedTypeDefs,
-	resolvers: merge__default['default'](
-		{ JSON: GraphQLJSON__default['default'] }, // allows scalar JSON
-		resolvers$6,
-		resolvers$5,
-		resolvers$4,
-		resolvers$3,
-		resolvers$2,
+	resolvers: merge(
+		{ JSON: GraphQLJSON }, // allows scalar JSON
+		resolvers,
 		resolvers$1,
-		resolvers
+		resolvers$2,
+		resolvers$3,
+		resolvers$4,
+		resolvers$5,
+		resolvers$6
 	)
 });
 
-const app = new Koa__default['default']();
-const router = new KoaRouter__default['default']();
+const app = new Koa();
+const router = new KoaRouter();
 const PORT = process.env.PORT || 5000;
 
-app.use(koaLogger__default['default']());
-app.use(koaCors__default['default']());
+app.use(koaLogger());
+app.use(koaCors());
 
 // read token from header
 app.use(async (ctx, next) => {
@@ -678,13 +687,13 @@ app.use(async (ctx, next) => {
 });
 
 // GraphQL
-const graphql = apolloServerKoa.graphqlKoa((ctx) => ({
+const graphql$1 = apolloServerKoa.graphqlKoa((ctx) => ({
 	schema: graphQLSchema,
 	context: { token: ctx.state.token },
 	formatError: formatErr
 }));
-router.post('/graphql', koaBody__default['default'](), graphql);
-router.get('/graphql', graphql);
+router.post('/graphql', koaBody(), graphql$1);
+router.get('/graphql', graphql$1);
 
 // test route
 router.get('/graphiql', apolloServerKoa.graphiqlKoa({ endpointURL: '/graphql' }));
