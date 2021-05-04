@@ -18,21 +18,22 @@
     descripcion: String!
   }
   input VehicleInput {
-	id_client: Int!           
-	tipo: String!           
-	tamano: String!
+	  id_client: Int!           
+	  tipo: String!           
+	  tamano: String!
     descripcion: String!
 }
 input EditVehicle {          
 	tipo: String!           
 	tamano: String!
-    descripcion: String!
+  descripcion: String!
 }
   `;
 
 export const vehicleQueries = `
     getAllVehicles: [Vehicle]!
-    getVehicle(id: Int!): [Vehicle]!
+    getVehicle(id_client: Int!): [Vehicle]!
+    getVehiclebyId(id: Int!): Vehicle!
 `;
 
 export const vehicleMutations = `

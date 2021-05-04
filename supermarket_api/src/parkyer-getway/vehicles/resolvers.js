@@ -3,6 +3,7 @@ import { url, port} from './server';
 
 const URL = `http://${url}:${port}`;
 const VEHICLE='vehiculos';
+const GET_VEHICLE='vehiculos/ver';
 const GET_VEHICLES='vehiculos';
 const EDIT_VEHICLE='vehiculos';
 const DELETE_VEHICLE='vehiculos';
@@ -14,10 +15,12 @@ const resolvers = {
 		getAllVehicles:(_)=> //endpoint para traer usuario
 			generalRequest(`${URL}/${GET_VEHICLES}`, 'GET'),
 
-		getVehicle:(_, { id })=> //endpoint para traer queja
-			generalRequest(`${URL}/${VEHICLE}/${id}`, 'GET'),
+		getVehicle:(_, { id_client })=> //endpoint para traer queja
+			generalRequest(`${URL}/${GET_VEHICLE}/${id_client}`, 'GET'),
 
-		//EXAMPLE ENDPOINTS
+		getVehiclebyId:(_, { id })=> //endpoint para traer queja
+			generalRequest(`${URL}/${VEHICLE}/${id}`, 'GET'),
+			//EXAMPLE ENDPOINTS
 		/*allCategories: (_) =>
 			getRequest(URL, ''),
 		categoryById: (_, { id }) =>
