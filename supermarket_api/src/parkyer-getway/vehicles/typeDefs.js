@@ -32,7 +32,7 @@ input EditVehicle {
 
 export const vehicleQueries = `
     getAllVehicles: [Vehicle]!
-    getVehicle(id: Int!): Vehicle!
+    getVehicle(id: Int!): [Vehicle]!
 `;
 
 export const vehicleMutations = `

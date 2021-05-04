@@ -262,7 +262,7 @@ input EditVehicle {
 
 const vehicleQueries = `
     getAllVehicles: [Vehicle]!
-    getVehicle(id: Int!): Vehicle!
+    getVehicle(id: Int!): [Vehicle]!
 `;
 
 const vehicleMutations = `
