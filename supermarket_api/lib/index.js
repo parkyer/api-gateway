@@ -325,6 +325,37 @@ const admin2Mutations = `
     deleteSuscription(id: Int!): Parking!
 `;
 
+const admin1TypeDef =  `
+
+type Parkinglot {
+    id: Int!
+    id_owner: Int!
+    id_client: String!
+    latitude: String!
+    longitude: String!
+    location: String!
+    type: String!
+}
+input parkinglotInput {
+    id_owner: Int!
+    id_client: String!
+    latitude: String!
+    longitude: String!
+    location: String!
+    type: String!
+}`;
+
+const admin1Queries = `
+    getParkingsCreated:[Parkinglot]!
+    getParkingById(id: Int!):Parkinglot!
+`;
+
+const admin1Mutations = `
+    createParking(parking: parkinglotInput!):Parkinglot!
+    updateParkingById(id: Int!, parking: parkinglotInput!):String!
+    deleteParkingById(id: Int!):Int!
+`;
+
 const authenticationTypeDef = `
 type UserLogin {
     id: Int!
@@ -600,23 +631,54 @@ const resolvers$5 = {
 	}
 };
 
-const url$6 = '35.226.48.188';
-const port$6 = '4002';
+//export const url = '35.175.24.175'
+const url$6 = '0.0.0.0';
+const port$6 = '4194';
 
-const URL$6 = `http://${url$6}:${port$6}`;
+const URL$6 = `http://${url$6}:${port$6}/api`;
+const PARKINGS='parkinglot';
+const GET_PARKINGBYID='getById';
+const UPDATE='update';
+
+const resolvers$6 = {
+	Query: {
+		//CUSTOM ENDPONTS
+		getParkingsCreated:(_)=> 
+			generalRequest(`${URL$6}/${PARKINGS}`, 'GET'),
+
+		getParkingById:(_,{ id })=>
+			generalRequest(`${URL$6}/${PARKINGS}/${GET_PARKINGBYID}/${id}`, 'GET'),
+		
+	},
+	
+	Mutation: {
+		//CUSTOM ENDPONTS
+		createParking:(_,{parking})=>
+			generalRequest(`${URL$6}/${PARKINGS}`,'POST', parking),
+		updateParkingById:(_,{id,parking})=>
+			generalRequest(`${URL$6}/${PARKINGS}/${UPDATE}/${id}`, 'PUT',parking),
+		deleteParkingById:(_,{id})=>
+			generalRequest(`${URL$6}/${PARKINGS}/${id}`, 'DELETE'),
+	}
+};
+
+const url$7 = '35.226.48.188';
+const port$7 = '4002';
+
+const URL$7 = `http://${url$7}:${port$7}`;
 const ADD_USER$1='add_user';
 const LOGIN='login';
 
-const resolvers$6 = {
+const resolvers$7 = {
 	Query: {
 		//CUSTOM ENDPONTS
 	},
 	Mutation: {
 		//CUSTOM ENDPONTS
 		crearUsuario:(_, {usuario})=>
-			generalRequest(`${URL$6}/${ADD_USER$1}`,'POST',usuario),//endpoint para crear usuario
+			generalRequest(`${URL$7}/${ADD_USER$1}`,'POST',usuario),//endpoint para crear usuario
         iniciarSesion:(_,{login})=>
-            generalRequest(`${URL$6}/${LOGIN}`,'POST',login)
+            generalRequest(`${URL$7}/${LOGIN}`,'POST',login)
 	}
 };
 
@@ -630,6 +692,7 @@ const mergedTypeDefs = mergeSchemas(
 		vehicleTypeDef,
 		contactoTypeDef,
 		admin2TypeDef,
+		admin1TypeDef,
 		authenticationTypeDef
 	],
 	[
@@ -639,6 +702,7 @@ const mergedTypeDefs = mergeSchemas(
 		vehicleQueries,
 		contactoQueries,
 		admin2Queries,
+		admin1Queries,
 		authenticationQueries
 	],
 	[
@@ -648,6 +712,7 @@ const mergedTypeDefs = mergeSchemas(
 		vehicleMutations,
 		contactoMutations,
 		admin2Mutations,
+		admin1Mutations,
 		authenticationMutations
 	]
 );
@@ -664,7 +729,8 @@ var graphQLSchema = graphqlTools.makeExecutableSchema({
 		resolvers$3,
 		resolvers$4,
 		resolvers$5,
-		resolvers$6
+		resolvers$6,
+		resolvers$7
 	)
 });
 
