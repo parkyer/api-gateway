@@ -248,21 +248,22 @@ const registerMutations = `
     descripcion: String!
   }
   input VehicleInput {
-	id_client: Int!           
-	tipo: String!           
-	tamano: String!
+	  id_client: Int!           
+	  tipo: String!           
+	  tamano: String!
     descripcion: String!
 }
 input EditVehicle {          
 	tipo: String!           
 	tamano: String!
-    descripcion: String!
+  descripcion: String!
 }
   `;
 
 const vehicleQueries = `
     getAllVehicles: [Vehicle]!
-    getVehicle(id: Int!): [Vehicle]!
+    getVehicle(id_client: Int!): [Vehicle]!
+    getVehiclebyId(id: Int!): Vehicle!
 `;
 
 const vehicleMutations = `
@@ -397,7 +398,7 @@ const authenticationMutations = `
     iniciarSesion(login: LoginInput!): Login!
 `;
 
-const url = '35.226.48.188';
+const url = '35.226.14.189';
 const port = '4000';
 
 const URL = `http://${url}:${port}`;
@@ -522,6 +523,7 @@ const port$3 = '3000';
 
 const URL$3 = `http://${url$3}:${port$3}`;
 const VEHICLE='vehiculos';
+const GET_VEHICLE='vehiculos/ver';
 const GET_VEHICLES='vehiculos';
 const EDIT_VEHICLE='vehiculos';
 const DELETE_VEHICLE='vehiculos';
@@ -533,10 +535,12 @@ const resolvers$3 = {
 		getAllVehicles:(_)=> //endpoint para traer usuario
 			generalRequest(`${URL$3}/${GET_VEHICLES}`, 'GET'),
 
-		getVehicle:(_, { id })=> //endpoint para traer queja
-			generalRequest(`${URL$3}/${VEHICLE}/${id}`, 'GET'),
+		getVehicle:(_, { id_client })=> //endpoint para traer queja
+			generalRequest(`${URL$3}/${GET_VEHICLE}/${id_client}`, 'GET'),
 
-		//EXAMPLE ENDPOINTS
+		getVehiclebyId:(_, { id })=> //endpoint para traer queja
+			generalRequest(`${URL$3}/${VEHICLE}/${id}`, 'GET'),
+			//EXAMPLE ENDPOINTS
 		/*allCategories: (_) =>
 			getRequest(URL, ''),
 		categoryById: (_, { id }) =>
@@ -631,8 +635,7 @@ const resolvers$5 = {
 	}
 };
 
-//export const url = '35.175.24.175'
-const url$6 = '0.0.0.0';
+const url$6 = '35.175.24.175';
 const port$6 = '4194';
 
 const URL$6 = `http://${url$6}:${port$6}/api`;
@@ -662,7 +665,7 @@ const resolvers$6 = {
 	}
 };
 
-const url$7 = '35.226.48.188';
+const url$7 = '35.226.14.189';
 const port$7 = '4002';
 
 const URL$7 = `http://${url$7}:${port$7}`;
