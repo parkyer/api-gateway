@@ -11,6 +11,7 @@ COPY . /parkyer-getway/
 WORKDIR /usr/src/app
 RUN chown node:node /usr/src/app
 USER node
+COPY package.json .
 RUN npm run prepublish
 
 CMD [ "npm", "run", "runServer" ]
