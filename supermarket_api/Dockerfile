@@ -1,17 +1,15 @@
 FROM node:carbon-slim
 # Create app directory
-WORKDIR /parkyer-getway
+WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package.json /parkyer-getway/
+COPY package.json /usr/src/app
 RUN npm install
 
 # Bundle app source
-COPY . /parkyer-getway/
-WORKDIR /usr/src/app
+COPY . /usr/src/app
 RUN chown node:node /usr/src/app
 USER node
-COPY package.json .
 RUN npm run prepublish
 
 CMD [ "npm", "run", "runServer" ]
