@@ -1,2 +1,2 @@
-export const url = '3.221.87.48'
+export const url = '52.4.236.161'
 export const port = '8080'
