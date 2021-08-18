@@ -3,10 +3,10 @@ import { url, port} from './server';
 
 const URL = `http://${url}:${port}`;
 const VEHICLE='vehiculos';
-const GET_VEHICLE='vehiculos/ver';
-const GET_VEHICLES='vehiculos';
-const EDIT_VEHICLE='vehiculos';
-const DELETE_VEHICLE='vehiculos';
+const GET_VEHICLE='vehicles/ver';
+const GET_VEHICLES='vehicles';
+const EDIT_VEHICLE='vehicles';
+const DELETE_VEHICLE='vehicles';
 
 
 const resolvers = {
