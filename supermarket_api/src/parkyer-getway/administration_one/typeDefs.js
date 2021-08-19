@@ -24,7 +24,7 @@ export const admin1Queries = `
 `;
 
 export const admin1Mutations = `
-    createParking(parking: parkinglotInput!):Parkinglot!
+    createParking(id: Int!, parking: parkinglotInput!):Parkinglot!
     updateParkingById(id: Int!, parking: parkinglotInput!):String!
     deleteParkingById(id: Int!):Int!
 `;
