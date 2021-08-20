@@ -16,7 +16,17 @@ input parkinglotInput {
     longitude: String!
     location: String!
     type: String!
-}`;
+}
+input parkingCreateInput {
+    id: Int!
+    id_owner: Int!
+    id_client: String!
+    latitude: String!
+    longitude: String!
+    location: String!
+    type: String! 
+}
+`;
 
 export const admin1Queries = `
     getParkingsCreated:[Parkinglot]!
@@ -24,7 +34,7 @@ export const admin1Queries = `
 `;
 
 export const admin1Mutations = `
-    createParking(id: Int!, parking: parkinglotInput!):Parkinglot!
+    createParking(parking: parkingCreateInput!):Parkinglot!
     updateParkingById(id: Int!, parking: parkinglotInput!):String!
     deleteParkingById(id: Int!):Int!
 `;
