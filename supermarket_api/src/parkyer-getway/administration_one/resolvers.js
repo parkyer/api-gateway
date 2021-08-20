@@ -19,7 +19,7 @@ const resolvers = {
 	
 	Mutation: {
 		//CUSTOM ENDPONTS
-		createParking:(_,{id,parking})=>
+		createParking:(_,{parking})=>
 			generalRequest(`${URL}/${PARKINGS}`,'POST', parking),
 		updateParkingById:(_,{id,parking})=>
 			generalRequest(`${URL}/${PARKINGS}/${UPDATE}/${id}`, 'PUT',parking),
