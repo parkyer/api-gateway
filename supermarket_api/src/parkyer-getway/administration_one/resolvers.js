@@ -4,6 +4,7 @@ import { url, port} from './server';
 const URL = `http://${url}:${port}/api`;
 const PARKINGS='parkinglot';
 const GET_PARKINGBYID='getById';
+const GET_USERPARKINGLOTS='getOwnerParkingLots';
 const UPDATE='update';
 
 const resolvers = {
@@ -14,6 +15,9 @@ const resolvers = {
 
 		getParkingById:(_,{ id })=>
 			generalRequest(`${URL}/${PARKINGS}/${GET_PARKINGBYID}/${id}`, 'GET'),
+		
+		getOwnerParkingLots:(_,{ id })=>
+			generalRequest(`${URL}/${PARKINGS}/${GET_USERPARKINGLOTS}/${id}`, 'GET'),
 		
 	},
 	
