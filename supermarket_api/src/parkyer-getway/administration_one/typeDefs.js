@@ -31,6 +31,7 @@ input parkingCreateInput {
 export const admin1Queries = `
     getParkingsCreated:[Parkinglot]!
     getParkingById(id: Int!):Parkinglot!
+    getOwnerParkingLots(id: Int!):[Parkinglot]!
 `;
 
 export const admin1Mutations = `
