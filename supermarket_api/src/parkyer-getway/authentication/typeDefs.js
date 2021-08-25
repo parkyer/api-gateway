@@ -12,6 +12,7 @@ type UserLogin {
 type Login {
     access: String!
     id: Int!
+    token: String!
 }
 input UserInputLogin {
     name: String!
