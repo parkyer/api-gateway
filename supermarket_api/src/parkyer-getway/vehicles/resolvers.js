@@ -2,7 +2,7 @@ import { generalRequest, getRequest } from '../../utilities';
 import { url, port} from './server';
 
 const URL = `http://${url}:${port}`;
-const VEHICLE='vehiculos';
+const VEHICLE='vehicles';
 const GET_VEHICLE='vehicles/ver';
 const GET_VEHICLES='vehicles';
 const EDIT_VEHICLE='vehicles';

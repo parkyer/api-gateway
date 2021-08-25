@@ -12,7 +12,7 @@ var merge = _interopDefault(require('lodash.merge'));
 var GraphQLJSON = _interopDefault(require('graphql-type-json'));
 var graphqlTools = require('graphql-tools');
 var request = _interopDefault(require('request-promise-native'));
-var graphql = require('graphql');
+var graphql$1 = require('graphql');
 
 /**
  * Creates a request following the given parameters
@@ -43,23 +43,6 @@ async function generalRequest(url, method, body, fullResponse) {
 }
 
 /**
- * Adds parameters to a given route
- * @param {string} url
- * @param {object} parameters
- * @return {string} - url with the added parameters
- */
-
-
-/**
- * Generates a GET request with a list of query params
- * @param {string} url
- * @param {string} path
- * @param {object} parameters - key values to add to the url path
- * @return {Promise.<*>}
- */
-
-
-/**
  * Merge the schemas in order to avoid conflicts
  * @param {Array<string>} typeDefs
  * @param {Array<string>} queries
@@ -73,7 +56,7 @@ function mergeSchemas(typeDefs, queries, mutations) {
 }
 
 function formatErr(error) {
-	const data = graphql.formatError(error);
+	const data = graphql$1.formatError(error);
 	const { originalError } = error;
 	if (originalError && originalError.error) {
 		const { path } = data;
@@ -344,15 +327,26 @@ input parkinglotInput {
     longitude: String!
     location: String!
     type: String!
-}`;
+}
+input parkingCreateInput {
+    id: Int!
+    id_owner: Int!
+    id_client: String!
+    latitude: String!
+    longitude: String!
+    location: String!
+    type: String! 
+}
+`;
 
 const admin1Queries = `
     getParkingsCreated:[Parkinglot]!
     getParkingById(id: Int!):Parkinglot!
+    getOwnerParkingLots(id: Int!):[Parkinglot]!
 `;
 
 const admin1Mutations = `
-    createParking(parking: parkinglotInput!):Parkinglot!
+    createParking(parking: parkingCreateInput!):Parkinglot!
     updateParkingById(id: Int!, parking: parkinglotInput!):String!
     deleteParkingById(id: Int!):Int!
 `;
@@ -371,6 +365,7 @@ type UserLogin {
 type Login {
     access: String!
     id: Int!
+    token: String!
 }
 input UserInputLogin {
     name: String!
@@ -448,7 +443,7 @@ const resolvers = {
 	}
 };
 
-const url$1 = '35.226.48.188';
+const url$1 = '35.226.14.189';
 const port$1 = '4001';
 
 const URL$1 = `http://${url$1}:${port$1}`;
@@ -480,7 +475,7 @@ const resolvers$1 = {
 	}
 };
 
-const url$2 = '54.237.253.183';
+const url$2 = '3.230.79.83';
 const port$2 = '55441';
 const entryPoint = 'api/Registers';
 
@@ -518,15 +513,15 @@ const resolvers$2 = {
 	}
 };
 
-const url$3 = '52.0.246.220';
+const url$3 = '3.93.139.155';
 const port$3 = '3000';
 
 const URL$3 = `http://${url$3}:${port$3}`;
-const VEHICLE='vehiculos';
-const GET_VEHICLE='vehiculos/ver';
-const GET_VEHICLES='vehiculos';
-const EDIT_VEHICLE='vehiculos';
-const DELETE_VEHICLE='vehiculos';
+const VEHICLE='vehicles';
+const GET_VEHICLE='vehicles/ver';
+const GET_VEHICLES='vehicles';
+const EDIT_VEHICLE='vehicles';
+const DELETE_VEHICLE='vehicles';
 
 
 const resolvers$3 = {
@@ -602,7 +597,7 @@ const resolvers$4 = {
 	}
 };
 
-const url$5 = '3.221.87.48';
+const url$5 = '52.4.236.161';
 const port$5 = '8080';
 
 const URL$5 = `http://${url$5}:${port$5}`;
@@ -635,12 +630,13 @@ const resolvers$5 = {
 	}
 };
 
-const url$6 = '35.175.24.175';
+const url$6 = '3.234.157.227';
 const port$6 = '4194';
 
 const URL$6 = `http://${url$6}:${port$6}/api`;
 const PARKINGS='parkinglot';
 const GET_PARKINGBYID='getById';
+const GET_USERPARKINGLOTS='getOwnerParkingLots';
 const UPDATE='update';
 
 const resolvers$6 = {
@@ -651,6 +647,9 @@ const resolvers$6 = {
 
 		getParkingById:(_,{ id })=>
 			generalRequest(`${URL$6}/${PARKINGS}/${GET_PARKINGBYID}/${id}`, 'GET'),
+		
+		getOwnerParkingLots:(_,{ id })=>
+			generalRequest(`${URL$6}/${PARKINGS}/${GET_USERPARKINGLOTS}/${id}`, 'GET'),
 		
 	},
 	
@@ -756,13 +755,13 @@ app.use(async (ctx, next) => {
 });
 
 // GraphQL
-const graphql$1 = apolloServerKoa.graphqlKoa((ctx) => ({
+const graphql = apolloServerKoa.graphqlKoa((ctx) => ({
 	schema: graphQLSchema,
 	context: { token: ctx.state.token },
 	formatError: formatErr
 }));
-router.post('/graphql', koaBody(), graphql$1);
-router.get('/graphql', graphql$1);
+router.post('/graphql', koaBody(), graphql);
+router.get('/graphql', graphql);
 
 // test route
 router.get('/graphiql', apolloServerKoa.graphiqlKoa({ endpointURL: '/graphql' }));
