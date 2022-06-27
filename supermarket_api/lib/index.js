@@ -410,7 +410,7 @@ const authenticationMutations = `
     iniciarSesion(login: LoginInput!): Login!
 `;
 
-const url = '34.133.102.104';
+const url = '35.208.118.111';
 const port = '4000';
 
 const URL = `http://${url}:${port}`;
@@ -460,7 +460,7 @@ const resolvers = {
 	}
 };
 
-const url$1 = '34.133.102.104';
+const url$1 = '35.208.118.111';
 const port$1 = '4001';
 
 const URL$1 = `http://${url$1}:${port$1}`;
