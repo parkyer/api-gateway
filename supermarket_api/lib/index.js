@@ -12,7 +12,7 @@ var merge = _interopDefault(require('lodash.merge'));
 var GraphQLJSON = _interopDefault(require('graphql-type-json'));
 var graphqlTools = require('graphql-tools');
 var request = _interopDefault(require('request-promise-native'));
-var graphql$1 = require('graphql');
+var graphql = require('graphql');
 
 /**
  * Creates a request following the given parameters
@@ -43,6 +43,23 @@ async function generalRequest(url, method, body, fullResponse) {
 }
 
 /**
+ * Adds parameters to a given route
+ * @param {string} url
+ * @param {object} parameters
+ * @return {string} - url with the added parameters
+ */
+
+
+/**
+ * Generates a GET request with a list of query params
+ * @param {string} url
+ * @param {string} path
+ * @param {object} parameters - key values to add to the url path
+ * @return {Promise.<*>}
+ */
+
+
+/**
  * Merge the schemas in order to avoid conflicts
  * @param {Array<string>} typeDefs
  * @param {Array<string>} queries
@@ -56,7 +73,7 @@ function mergeSchemas(typeDefs, queries, mutations) {
 }
 
 function formatErr(error) {
-	const data = graphql$1.formatError(error);
+	const data = graphql.formatError(error);
 	const { originalError } = error;
 	if (originalError && originalError.error) {
 		const { path } = data;
@@ -393,7 +410,7 @@ const authenticationMutations = `
     iniciarSesion(login: LoginInput!): Login!
 `;
 
-const url = '35.226.14.189';
+const url = '34.133.102.104';
 const port = '4000';
 
 const URL = `http://${url}:${port}`;
@@ -443,7 +460,7 @@ const resolvers = {
 	}
 };
 
-const url$1 = '35.226.14.189';
+const url$1 = '34.133.102.104';
 const port$1 = '4001';
 
 const URL$1 = `http://${url$1}:${port$1}`;
@@ -664,7 +681,7 @@ const resolvers$6 = {
 	}
 };
 
-const url$7 = '35.226.14.189';
+const url$7 = '34.133.102.104';
 const port$7 = '4002';
 
 const URL$7 = `http://${url$7}:${port$7}`;
@@ -755,13 +772,13 @@ app.use(async (ctx, next) => {
 });
 
 // GraphQL
-const graphql = apolloServerKoa.graphqlKoa((ctx) => ({
+const graphql$1 = apolloServerKoa.graphqlKoa((ctx) => ({
 	schema: graphQLSchema,
 	context: { token: ctx.state.token },
 	formatError: formatErr
 }));
-router.post('/graphql', koaBody(), graphql);
-router.get('/graphql', graphql);
+router.post('/graphql', koaBody(), graphql$1);
+router.get('/graphql', graphql$1);
 
 // test route
 router.get('/graphiql', apolloServerKoa.graphiqlKoa({ endpointURL: '/graphql' }));
